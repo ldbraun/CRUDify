@@ -57,7 +57,7 @@ class CRUD
         $result = $conn->query($sql);
         
         if(!$result) {
-            throw new Exception($conn->error);
+            die($conn->error);
         }
         
         return $result;
