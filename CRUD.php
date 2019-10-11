@@ -246,7 +246,7 @@ class CRUD
     /**
     * Uploads Multiple File
     *
-    * @param array $files The files to be uploaded to the file system
+    * @param array $fieldname The files to be uploaded to the file system
     * @param string $uploadto The path the files will be uploaded to
     * @return array()
     */
