@@ -248,7 +248,7 @@ class CRUD
     *
     * @param array $fieldname The files to be uploaded to the file system
     * @param string $uploadto The path the files will be uploaded to
-    * @return array()
+    * @return array uploaded file(s) properties in an associative array
     */
     function upload_multiple_files($fieldname, $uploadto) {
 
