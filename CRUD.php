@@ -1,6 +1,6 @@
 <?php
 /**
-* PHP CRUD Create CRUD operations easy, simply and faster
+* CRUDify - Create CRUD operations easily, simply and faster with PHP
 *
 * @author Braun Okoi Boniface <ldbraun@live.com>
 * @license MIT <https://opensource.org/licenses/MIT>
@@ -79,48 +79,6 @@ class Paysoft
         } else {
             $this->redirect("{$goto}?s=0");
         }
-    }
-    
-    /**
-    *
-    * Insert's new record to database table from form or any key=>value pair record
-    *
-    *@param string $table The database table to insert the record to
-    *@param array $post_fields http method(post, get) or key=>value pair
-    *@param array $formats Additional form field format e.g: setting encrypting password field like array("password"=>md5('password'))
-    *@param boolean $avail_btn Checks if submit button in the form has a name and is included in the post parameters
-    */
-    function add_rec($table, array $post_fields, $formats=array(), $avail_btn=true) {
-        global $conn;
-        $error = "";
-        
-        if(!empty($formats) && count($formats) > 0) {
-            foreach($formats as $fkey=>$fval) {
-                $post_fields[$fkey] = $fval;
-            }
-        }
-        
-        $fields = array();
-        $vals = array();
-
-        foreach($post_fields as $field=>$val) {
-            array_push($fields, "`{$field}`");
-            array_push($vals, "'{$conn->real_escape_string($val)}'");
-        }
-        
-        if($avail_btn === true) {
-            array_pop($fields);
-            array_pop($vals);
-        }
-
-        //Conversions
-        $cols = implode(", ", $fields);
-        $data = implode(", ", $vals);
-
-        $sql = "INSERT INTO {$table}({$cols}) VALUES ({$data})";
-        $result = $conn->query($sql) or die($conn->error);
-        
-        return $result;
     }
     
     /**
@@ -260,53 +218,7 @@ class Paysoft
     }
     
     /**
-    *
-    * Updates existing database table record(s) from form or any key=>value pair record
-    *
-    *@param string $table The database table to be updated
-    *@param array $post_fields http method(post, get) or key=>value pair
-    *@param string $clause Clause to be used for update
-    *@param array $formats Additional form field format e.g: setting encrypting password field like array("password"=>md5('password'))
-    *@param boolean $avail_btn Checks if submit button in the form has a name and is included in the post parameters
-    */
-    public function upd_rec($table, array $post_fields, array $clause, array $formats=null, $avail_btn=true) {
-        global $conn;
-        $error = "";
-        
-        if(!empty($formats) && count($formats) > 0) {
-            foreach($formats as $fkey=>$fval) {
-                $post_fields[$fkey] = $fval;
-            }
-        }
-        
-        $post_data = array(
-            "psets" => array()
-        );
-
-        foreach($post_fields as $field=>$val) {
-            array_push($post_data['psets'], "`{$field}`='" .$conn->real_escape_string($val) . "'");
-        }
-        
-        if($avail_btn === true) {
-            array_pop($post_data['psets']);
-        }
-
-        //Conversions
-        $pcols = implode(", ", $post_data['psets']);
-
-        $stmt = "UPDATE {$table} SET {$pcols} WHERE {$clause['clause']}='{$clause['value']}'";
-        //die($stmt);
-        $result = $conn->query($stmt);
-        
-        if($result) {
-            return $result;
-        } else {
-            die($conn->error);
-        }
-    }
-    
-    /**
-    * Performs User loin
+    * Performs User login
     *
     * @param $query
     * @return array if true and bool(false) if false
