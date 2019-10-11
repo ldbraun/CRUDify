@@ -6,7 +6,7 @@
 * @license MIT <https://opensource.org/licenses/MIT>
 */
 
-class Paysoft 
+class CRUD 
 {
     function __construct() {
         
@@ -51,7 +51,7 @@ class Paysoft
     *
     *
     */
-    function get_rec($query) {
+    function get($query) {
         global $conn;
         $sql = $query;
         $result = $conn->query($sql);
