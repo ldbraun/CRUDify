@@ -248,19 +248,30 @@ class CRUD
     *
     * @param array $fieldname The files to be uploaded to the file system
     * @param string $uploadto The path the files will be uploaded to
+    * @param array $filetype Upload file type
     * @return array uploaded file(s) properties in an associative array
     */
-    function upload($fieldname, $uploadto) {
+    function upload($fieldname, $uploadto, array $filetype=[]) {
 
         $files=array();
         $fdata=$_FILES[$fieldname];
         if(is_array($fdata['name'])) {
+            
+            $filename = $fdata['name'];
+            
+            $fileIndex = 0;
             for($i=0; $i<count($fdata['name']); ++$i) {
-                $files[]=array(
-                    'name'=>date('Ymd' . time()) . $fdata['name'][$i],
-                    'type'=>$fdata['type'][$i],
-                    'tmp_name'=>$fdata['tmp_name'][$i]
-                );
+                $ext = pathinfo($fdata['name'][$i], PATHINFO_EXTENSION);
+                if(count($filetype) > 0 && !in_array($ext, $filetype)) {
+                    $this->redirect("{$_SERVER['HTTP_REFERER']}?filetype=notAllowed");
+                } else {
+                    $fileIndex++;
+                    $files[]=array(
+                        'name'=>date('Ymd' . time()) . "_{$fileIndex}.{$ext}",
+                        'type'=>$fdata['type'][$i],
+                        'tmp_name'=>$fdata['tmp_name'][$i]
+                    );
+                }
             }
         } else {
             $files[]=$fdata;
