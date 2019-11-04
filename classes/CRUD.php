@@ -90,7 +90,7 @@ class CRUD
     *@param array $formats Additional form field format e.g: setting encrypting password field like array("password"=>md5('password'))
     *@param boolean $avail_btn Checks if submit button in the form has a name and is included in the post parameters
     */
-    function add($conn, $table, array $columns, $formats=array(), $data_type=[], $avail_btn=true) {
+    function add($conn, $table, array $columns, $formats=[], $data_type=[], $avail_btn=true) {
         $error = "";
         
         if(!empty($formats) && count($formats) > 0) {
@@ -104,10 +104,10 @@ class CRUD
         }
         
         $post_data = array(
-            "tcols" => array(),
-            "tvals" => array(),
-            "qmarks" => array(),
-            "data_type" => array()
+            "tcols" => [],
+            "tvals" => [],
+            "qmarks" => [],
+            "data_type" => []
         );
 
         foreach($columns as $key=>$val) {
@@ -161,7 +161,7 @@ class CRUD
     *@param array $formats Additional form field format e.g: setting encrypting password field like array("password"=>md5('password'))
     *@param boolean $avail_btn Checks if submit button in the form has a name and is included in the post parameters
     */
-    public function update($table, array $columns, array $condition, $formats=array(), $data_type=[], $avail_btn=true) {
+    public function update($table, array $columns, array $condition, $formats=[], $data_type=[], $avail_btn=true) {
         global $conn;
         $error = "";
         
@@ -176,9 +176,9 @@ class CRUD
         }
         
         $post_data = array(
-            "tsets" => array(),
-            "tvals" => array(),
-            "data_type" => array()
+            "tsets" => [],
+            "tvals" => [],
+            "data_type" => []
         );
 
         foreach($columns as $key=>$val) {
@@ -187,7 +187,7 @@ class CRUD
                 array_push($post_data['tvals'], "{$val}");
                 array_push($post_data['data_type'], "{$data_type[$key]}");
             } else {
-                array_push($post_data['tcols'], "`{$key}`=?");
+                array_push($post_data['tsets'], "`{$key}`=?");
                 array_push($post_data['tvals'], "{$val}");
                 array_push($post_data['data_type'], "s");
             }
